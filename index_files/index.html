@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0087)https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&castscreen=0 -->
+<html xmlns="http://www.w3.org/1999/xhtml" class="x-border-box x-strict"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+   
+  <style type="text/css">
+  	html,body {
+		margin: 0px;
+		padding: 0px;
+		height: 100%;
+		width:100%;
+	}
+	
+	#frame_content {
+		width: 100%;
+		height: 100%;
+	}
+  </style>
+ </head>
+ <body class="x-body x-webkit x-chrome" id="ext-gen1051">
+ 
+  <script type="text/javascript" src="./domain(1).js.下载"></script>
+ <script type="text/javascript" src="./import-all-classes.js.下载"></script><script src="./ServerHosts.js.下载"></script><script src="./all-classes.js.下载"></script>
+  <script type="text/javascript" src="./ed_complete.js.下载"></script>
+  <script type="text/javascript" src="./jquery.min(1).js.下载"></script>
+  <script type="text/javascript">
+	function greenligth(){
+		Ext.fly(window.frameElement).parent().addCls('ans-job-finished');
+        greenLightSetAriaLabel();
+	}
+
+    // 无障碍任务点完成读取支持
+    function greenLightSetAriaLabel() {
+     try {
+      // 获取视频iframe当前窗口所在的父元素
+      var parentDiv = Ext.fly(window.frameElement).parent();
+      if (parentDiv) {
+       // 在父元素中查找类名为ans-job-icon的子元素
+       var jobIconDiv = parentDiv.down('.ans-job-icon');
+       if (jobIconDiv) {
+        // 任务点完成无障碍读取支持
+        jobIconDiv.set({'aria-label': '任务点已完成'});
+       }
+      }
+     } catch (e) {
+      console.log(e)
+     }
+    }
+	
+	if(ed_complete){
+		Ext.Function.interceptAfter(window, "ed_complete", function(){
+			greenligth();
+		});
+	}
+
+	var setting = parent.AttachmentSetting,
+		iframe =  window.frameElement,
+		data = Ext.decode(iframe.getAttribute('data')),
+		courseid = data.courseid,
+		_jobid = data._jobid,
+		_mid = data.mid,
+		workid = typeof data.schoolid !== 'undefined'?(data.schoolid+'-'+data.workid):data.workid,//
+		jobid = typeof data.jobid !== 'undefined' ? data.jobid:'',
+		m={},
+		s,
+		src = '/mooc-ans/api/work?api=1&workId=' + workid + '&jobid=' + jobid + '&needRedirect=true&skipHeader=true';
+    if ((top.location.href.indexOf("/ztnodedetailcontroller/visitnodedetail") > -1 || top.location.href.indexOf("/zt/") > -1) && !setting) {
+      $("body").append('<div class="tips">请登录后参加章节测验</div>');
+    } else {
+       typeof setting === 'string' ? setting = Ext.decode(setting) : setting;
+       if(setting.defaults && setting.defaults.knowledgeid){
+        var knowledgeid = setting.defaults.knowledgeid || '',
+                ktoken = setting.defaults.ktoken || '',
+                courseid = setting.defaults.courseid?setting.defaults.courseid:'',
+                cpi = setting.defaults.cpi || "",
+                classIdForPortal = setting.defaults.classIdForPortal || "",
+                cpiForPortal = setting.defaults.cpiForPortal || "",
+                src = src + "&knowledgeid=" + knowledgeid + "&ktoken=" + ktoken + "&cpi=" + cpi;
+        if(top.location.pathname.indexOf('visitnodedetail') != -1 ){
+         src = src + "&fromType=" + "portal" + "&classIdForPortal=" + classIdForPortal + "&cpiForPortal=" + cpiForPortal;
+        }
+       }
+       if(setting && setting.control){
+
+        var attachments = setting.attachments,
+                spec = data.workid+"-"+data.schoolid,
+                worktype = data.worktype,
+                s = '';
+
+        if(setting.defaults && setting.defaults.knowledgeid){
+         clazzId = setting.defaults.clazzId || '',
+                 ut = (top.location.pathname.indexOf('teacherstudy') != -1 || window.parent.parent.location.pathname.indexOf('teacherstudy') != -1) ? 't' : 's';
+         if (top.location.pathname.indexOf('comparecard') != -1) {
+          ut = "s";
+         }
+         if(top.location.pathname.indexOf('visitnodedetail') != -1 ){
+          ut = setting.defaults.ut;
+         }
+         src = src + "&ut=" + ut + "&clazzId=" + clazzId +"&type="+(worktype=='workB'?'b':'') ;
+        }
+
+        var enc = '';
+        var workExtInfoEnc = "";
+        var oriNodeId = "";
+        var utenc=top.utEnc || window.parent.parent.utEnc;
+
+
+        for(var i=0;i<attachments.length;i++){
+         m = attachments[i];
+         if (m.jobid && jobid == m.jobid && _mid == m.property.mid && m.enc) {
+          enc = m.enc;
+          job = m.job;
+
+          if(typeof m.workExtInfoEnc != "undefined") {
+             workExtInfoEnc = m.workExtInfoEnc;
+          }
+
+          if(typeof m.oriNodeId != "undefined") {
+             oriNodeId = m.oriNodeId;
+          }
+
+          if (!job) {
+           greenligth();
+          }
+          break;
+         } else {
+          if (!m.jobid && _mid == m.property.mid && m.enc) {
+           enc = m.enc;
+           if(typeof m.workExtInfoEnc != "undefined") {
+             workExtInfoEnc = m.workExtInfoEnc;
+           }
+
+           if(typeof m.oriNodeId != "undefined") {
+             oriNodeId = m.oriNodeId;
+           }
+
+           break;
+          }
+         }
+
+        }
+        for(var i=0;i<attachments.length;i++){
+         m = attachments[i];
+
+         if(m.property && m.property.workid){
+          s = m.property.workid+"-"+m.property.schoolid;
+          if (spec==s) {
+           //console.log(m.enc);
+           window._jobindex = i;
+           break;
+          }
+         }
+        }
+
+        src += '&enc=' + enc+"&utenc="+utenc;
+           if(workExtInfoEnc != "" && oriNodeId != "") {
+               src += '&workExtInfoEnc=' + workExtInfoEnc + "&oriNodeId=" + oriNodeId;
+           }
+       }
+
+       if (!courseid) {
+        try {
+         courseid = top.courseid;
+        }catch(e){}
+       }
+
+       if (setting.mooc2 && setting.mooc2 == 1) {
+        src += "&mooc2=1";
+       }
+
+       src += "&courseid=" + courseid;
+
+       if(location.search && location.search.indexOf('castscreen=1') > -1){
+        src = src.replace('/api/work','/castscreen/chapterwork-look');
+       }
+
+       iframe.setAttribute('_src',src);
+
+       render_iframe();
+       try {
+        $(iframe).parents("p").attr("tabindex","-1");
+       } catch (e) {
+       }
+    }
+  </script><iframe id="frame_content" name="frame_content" src="./work.html" frameborder="0" scrolling="auto"></iframe>
+<textarea id="BFI_DATA" style="width: 1px; height: 1px; display: none;"></textarea><title> </title><div id="WidgetFloaterPanels" translate="no" style="display: none; text-align: left; direction: ltr; visibility: hidden;" class="LTRStyle"> <div id="WidgetFloater" style="display: none" onmouseover="Microsoft.Translator.OnMouseOverFloater()" onmouseout="Microsoft.Translator.OnMouseOutFloater()"> <div id="WidgetLogoPanel"> <span id="WidgetTranslateWithSpan"><span>TRANSLATE with </span><img id="FloaterLogo"></span> <span id="WidgetCloseButton" title="Exit Translation" onclick="Microsoft.Translator.FloaterOnClose()">x</span></div> <div id="LanguageMenuPanel"> <div class="DDStyle_outer"><input name="LanguageMenu_svid" type="text" id="LanguageMenu_svid" style="display:none;" autocomplete="on" value="en" onclick="this.select()"> <input name="LanguageMenu_textid" type="text" id="LanguageMenu_textid" style="display:none;" autocomplete="on" onclick="this.select()"> <span onselectstart="return false" tabindex="0" class="DDStyle" id="__LanguageMenu_header" onclick="return LanguageMenu &amp;&amp; !LanguageMenu.Show(&#39;__LanguageMenu_popup&#39;, event);" onkeydown="return LanguageMenu &amp;&amp; !LanguageMenu.Show(&#39;__LanguageMenu_popup&#39;, event);">English</span> <div style="position:relative;text-align:left;left:0;"><div style="position:absolute;width:;left:0px;"><div class="DDStyle" style="display:none;" id="__LanguageMenu_popup"> <table id="LanguageMenu" border="0"> <tbody><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ar&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#ar">Arabic</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;he&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#he">Hebrew</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;pl&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#pl">Polish</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;bg&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#bg">Bulgarian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;hi&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#hi">Hindi</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;pt&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#pt">Portuguese</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ca&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#ca">Catalan</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;mww&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#mww">Hmong Daw</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ro&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#ro">Romanian</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;zh-CHS&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#zh-CHS">Chinese Simplified</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;hu&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#hu">Hungarian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ru&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#ru">Russian</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;zh-CHT&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#zh-CHT">Chinese Traditional</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;id&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#id">Indonesian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;sk&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#sk">Slovak</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;cs&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#cs">Czech</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;it&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#it">Italian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;sl&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#sl">Slovenian</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;da&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#da">Danish</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ja&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#ja">Japanese</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;es&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#es">Spanish</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;nl&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#nl">Dutch</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;tlh&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#tlh">Klingon</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;sv&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#sv">Swedish</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;en&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#en">English</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ko&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#ko">Korean</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;th&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#th">Thai</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;et&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#et">Estonian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;lv&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#lv">Latvian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;tr&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#tr">Turkish</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;fi&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#fi">Finnish</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;lt&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#lt">Lithuanian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;uk&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#uk">Ukrainian</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;fr&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#fr">French</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ms&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#ms">Malay</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ur&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#ur">Urdu</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;de&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#de">German</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;mt&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#mt">Maltese</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;vi&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#vi">Vietnamese</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;el&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#el">Greek</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;no&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#no">Norwegian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;cy&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#cy">Welsh</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;ht&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#ht">Haitian Creole</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick(&#39;fa&#39;);" ondragstart="LanguageMenu.ondragstart(event);" href="https://mooc1.chaoxing.com/ananas/modules/work/index.html?v=2023-1019-1629&amp;castscreen=0#fa">Persian</a></td><td></td> </tr> </tbody></table> <img alt="" style="height:7px;width:17px;border-width:0px;left:20px;"> </div></div></div></div> <script type="text/javascript"> var LanguageMenu; var LanguageMenu_keys=["ar","bg","ca","zh-CHS","zh-CHT","cs","da","nl","en","et","fi","fr","de","el","ht","he","hi","mww","hu","id","it","ja","tlh","ko","lv","lt","ms","mt","no","fa","pl","pt","ro","ru","sk","sl","es","sv","th","tr","uk","ur","vi","cy"]; var LanguageMenu_values=["Arabic","Bulgarian","Catalan","Chinese Simplified","Chinese Traditional","Czech","Danish","Dutch","English","Estonian","Finnish","French","German","Greek","Haitian Creole","Hebrew","Hindi","Hmong Daw","Hungarian","Indonesian","Italian","Japanese","Klingon","Korean","Latvian","Lithuanian","Malay","Maltese","Norwegian","Persian","Polish","Portuguese","Romanian","Russian","Slovak","Slovenian","Spanish","Swedish","Thai","Turkish","Ukrainian","Urdu","Vietnamese","Welsh"]; var LanguageMenu_callback=function(){ }; var LanguageMenu_popupid='__LanguageMenu_popup'; </script> </div> <div id="CTFLinksPanel"> <span id="ExternalLinksPanel"><a id="HelpLink" title="Help" target="_blank" href="https://go.microsoft.com/?linkid=9722454"> <img id="HelpImg"></a> <a id="EmbedLink" href="javascript:Microsoft.Translator.FloaterShowEmbed()" title="Get this widget for your own site"> <img id="EmbedImg"></a> <a id="ShareLink" title="Share translated page with friends" href="javascript:Microsoft.Translator.FloaterShowSharePanel()"> <img id="ShareImg"></a> </span> </div> <div id="FloaterProgressBar"> <span id="ProgressFill"></span> </div> </div> <div id="WidgetFloaterCollapsed" style="display: none" onmouseover="Microsoft.Translator.OnMouseOverFloater()"> <span>TRANSLATE with </span><img id="CollapsedLogoImg"></div> <div id="FloaterSharePanel" style="display: none"> <div id="ShareTextDiv"> <span id="ShareTextSpan"> COPY THE URL BELOW </span> </div> <div id="ShareTextboxDiv"> <input name="ShareTextbox" type="text" id="ShareTextbox" readonly="readonly" onclick="this.select()"> <!--a id="TwitterLink" title="Share on Twitter"> <img id="TwitterImg" /></a> <a-- id="FacebookLink" title="Share on Facebook"> <img id="FacebookImg" /></a--> <a id="EmailLink" title="Email this translation"> <img id="EmailImg"></a> </div> <div id="ShareFooter"> <span id="ShareHelpSpan"><a id="ShareHelpLink"> <img id="ShareHelpImg"></a></span> <span id="ShareBackSpan"><a id="ShareBack" href="javascript:Microsoft.Translator.FloaterOnShareBackClick()" title="Back To Translation"> Back</a></span> </div> <input name="EmailSubject" type="hidden" id="EmailSubject" value="Check out this page in {0} translated from {1}"> <input name="EmailBody" type="hidden" id="EmailBody" value="Translated: {0}%0d%0aOriginal: {1}%0d%0a%0d%0aAutomatic translation powered by Microsoft® Translator%0d%0ahttp://www.bing.com/translator?ref=MSTWidget"> <input type="hidden" id="ShareHelpText" value="This link allows visitors to launch this page and automatically translate it to {0}."> </div> <div id="FloaterEmbed" style="display: none"> <div id="EmbedTextDiv"> <span id="EmbedTextSpan">EMBED THE SNIPPET BELOW IN YOUR SITE</span> <a id="EmbedHelpLink" title="Copy this code and place it into your HTML."> <img id="EmbedHelpImg"></a> </div> <div id="EmbedTextboxDiv"> <input name="EmbedSnippetTextBox" type="text" id="EmbedSnippetTextBox" readonly="readonly" value="&lt;div id=&#39;MicrosoftTranslatorWidget&#39; class=&#39;Dark&#39; style=&#39;color:white;background-color:#555555&#39;&gt;&lt;/div&gt;&lt;script type=&#39;text/javascript&#39;&gt;setTimeout(function(){var s=document.createElement(&#39;script&#39;);s.type=&#39;text/javascript&#39;;s.charset=&#39;UTF-8&#39;;s.src=((location &amp;&amp; location.href &amp;&amp; location.href.indexOf(&#39;https&#39;) == 0)?&#39;https://ssl.microsofttranslator.com&#39;:&#39;http://www.microsofttranslator.com&#39;)+&#39;/ajax/v3/WidgetV3.ashx?siteData=ueOIGRSKkd965FeEGM5JtQ**&amp;ctf=true&amp;ui=true&amp;settings=manual&amp;from=en&#39;;var p=document.getElementsByTagName(&#39;head&#39;)[0]||document.documentElement;p.insertBefore(s,p.firstChild); },0);&lt;/script&gt;" onclick="this.select()"> </div> <div id="EmbedNoticeDiv"><span id="EmbedNoticeSpan">Enable collaborative features and customize widget: <a href="http://www.bing.com/widget/translator" target="_blank">Bing Webmaster Portal</a></span></div> <div id="EmbedFooterDiv"><span id="EmbedBackSpan"><a href="javascript:Microsoft.Translator.FloaterOnEmbedBackClick()" title="Back To Translation">Back</a></span></div> </div> <script type="text/javascript"> var intervalId = setInterval(function () { if (MtPopUpList) { LanguageMenu = new MtPopUpList(); var langMenu = document.getElementById(LanguageMenu_popupid); var origLangDiv = document.createElement("div"); origLangDiv.id = "OriginalLanguageDiv"; origLangDiv.innerHTML = "<span id='OriginalTextSpan'>ORIGINAL: </span><span id='OriginalLanguageSpan'></span>"; langMenu.appendChild(origLangDiv); LanguageMenu.Init('LanguageMenu', LanguageMenu_keys, LanguageMenu_values, LanguageMenu_callback, LanguageMenu_popupid); window["LanguageMenu"] = LanguageMenu; clearInterval(intervalId); } }, 1); </script> </div></body></html>
