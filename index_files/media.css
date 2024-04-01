@@ -1,0 +1,188 @@
+﻿@charset "UTF-8";
+/**
+ * [Large Screen for PC & Pad]
+ * 960~1199
+ */
+@media screen and (max-width: 1170px) {
+.wrapper .inner { width:1000px; margin:0 auto;}
+.wp-menu .menu-item {/* width: 15%; */}
+.wp-menu .menu-item a.menu-link {/* padding: 0 27px; */}
+.wp-menu {width:640px;}
+
+.main1 .inner{padding: 30px 0px 25px;}
+.main1 .ml{ width:350px;}
+.main1 .mc{width:300px;margin-left: 18px;}
+.main1 .mr{ width:315px;}
+
+.main2 .inner{padding: 30px 0px 25px;}
+.main2 .ml{ width:350px;}
+.main2 .mc{ width:300px;margin-left:18px;}
+.main2 .mr{width:315px;}
+
+.main3 .inner{padding:35px 0px;} 
+}
+/**
+ * [Medium Screen for Pad]
+ * 768~959
+ */
+@media screen and (max-width: 999px) {
+.wrapper .inner { width:100%; margin:0 auto;}
+#header .inner{padding:0px 0px;height: auto;position:relative;background:none;}
+.head .head-left{ float:none;display:inline-block; width:100%; height:auto; margin-bottom:20px; text-align:center;}
+.head .head-main{display:none;}
+.head .head-right{ float:none; width:100%;margin-top:20px;}
+.head .head-right .searchbox{margin:5px 10px;}
+
+.head .sitelogo a{display:block;width:100%;position:relative;left:0px;top: 6px; bottom:0px;}
+
+.main-nav-panel{float:none;}
+.wp-navi .navi-slide-head {display: block;padding:0 10px;height: 40px;background:#fff;}
+/*导航样式：后台绑定时也可以定义配置*/
+.wp-menu {display:none;background:#fff; width:auto;}
+.wp-menu .menu-item {display: inline-block;float:none; position: relative; z-index: 100;width:100%;padding-left:0px;border-bottom:1px solid #eee;}
+.wp-menu .menu-item.i1 { background:none;}
+.wp-menu .menu-item > .menu-switch-arrow{display: block;width: 38px;height: 38px;position: absolute;right: 6px;top: 1px;background: url(css/img/icons.png) no-repeat 10px -116px;}
+.wp-menu .menu-item a.menu-link {display:block;padding: 0 20px;line-height: 40px;color: #343434;font-size: 15px;}
+.wp-menu .menu-item a.menu-link.hover,.wp-menu .menu-item.hover{ text-decoration: none; color: #000; background-color: #eee; }
+.sub-menu {display: none;position:relative;left: 0;bottom: 0px;top: 0px;min-width: 0px;z-index: 100;background: #fff;opacity: 0.8\9;background: #444343\9;filter:alpha(opacity=90);}
+.sub-menu .sub-item { position: relative; white-space: nowrap; vertical-align: top; _zoom:1;/* float: left; */border: 1px solid #eee;}
+.sub-menu .sub-item a { display: block;color: #000000;height: auto;line-height: 43px;padding: 0 44px;font-size: 14px; background:none;}
+.sub-menu .sub-item a:hover { color: #eee; background-color:#444343; display: block; }
+.sub-menu .sub-menu { left: 100%; top: 0; z-index: 200; background: rgba(11, 102, 244, 0.8); opacity: 0.8\9; background: #444343\9; filter:alpha(opacity=90); }
+
+.focus-title-bar{display:none!important;}
+.wrapper .inner .mod{ width:auto;padding:0px 10px; margin:0 auto;}
+
+.main1 .inner{padding: 15px 0px 5px;}
+.main1 .ml{float:none; width:100%;}
+.main1 .mc{float:none; width:100%;; margin-left:0px;}
+.main1 .mr{float:none; width:100%;;}
+
+.main2 .inner{padding: 15px 0px 5px;}
+.main2 .ml{float:none; width:100%;}
+.main2 .mc{float:none; width:100%; margin-left:0px;}
+.main2 .mr{float:none; width:100%;}
+
+
+.rili .news_list li.news .news_text{display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;}
+ 
+.post1 .tt {border-bottom: 0px solid #d1d1d1;margin-bottom: 0px;}
+
+.post-11 .news_list{margin:0px -10px;}
+.post-11 .news_list li.news .news_box{display:inline-block;margin:0px 10px; width:100%;}
+
+.post-71 .news_list{margin: 0px -5px;}
+.post-71 .news_list li.news{float:left;width: 33.3%;margin-bottom: 10px;}
+.post-71 .news_list li.news .news_box{display:block;margin: 0px 5px}
+
+.col_news .col_news_box{margin-left: 290px;margin-right: 10px;}
+}
+/**
+ * [Small Screen for Smart Phone and Mini Pad]
+ * 480~767
+ */
+@media screen and (max-width: 767px) {
+.headtop .top-main{/* display:none; */float: left;}
+   
+#header .inner{height: auto;}
+.head .sitelogo a img{width: 74%;margin:10px 0px;}
+.site-rale ul li.links a{font-size:14px;}
+/*标准标题扩展*/
+.post4 {}
+.post4 .tt .tit .title {margin-right:2px;font-size:16px;}
+
+.main1 .inner{padding: 10px 0px 0px;}
+.main3 .inner{padding: 22px 0px 10px;}
+.main4{display:none;}
+.main5 .mc{float:none; width:100%; margin-left:0px;}
+.main5 .mr{float:none; width:100%;} 
+
+.rili .news_list li.news{margin-bottom:10px;}
+
+.tu_text .news_list li.news .news_imgs{float: none;width:100%;height: auto;}
+.tu_text .news_list li.news .news_imgs img{width:100%;height: auto;}
+.tu_text .news_list li.news .news_wz{float: none;width:auto;padding:14px 20px;height: 130px;position:relative;} 
+
+.tu_link #wp_nav_w61{margin:0px 0px;}
+.tu_link .iconcon{display:block;float:none;width:100%;height:auto; margin-bottom:10px;padding-bottom:0px;background: #F5F5F5;border: 1px solid #D8D8D8; text-align:center;}
+.tu_link .iconcon .icon{display:none;}
+.tu_link .iconcon p{padding:10px 0px;}
+
+.post-12 .news_list li.news .news_title,
+.post-41 .news_list li.news .news_title{width:75%;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;overflow: hidden;} 
+
+.post-71 .news_list li.news .news_imgs{width:100%;height:60px;}
+/* 自定义登录样式 */
+.form_box{}
+.form_box .input_box{display:block;margin-right:0px; margin-bottom:10px;}
+.form_box .input_box input{height: 32px;line-height: 32px;border:1px solid red;}
+.form_box .input_box .input_text{width: 100%;border: 1px solid #E0E0E0;padding:0px 0px;}
+.form_box .input_box .input_btn{width:100%;border: 1px solid #DB8B1F;}
+
+.searchbtn{display:none!important;}
+.searchbox{width:auto!important;margin-top:4px;}
+.wp-search .search-input input.search-title {width:120px;}
+.wp-search .search-input {margin-left:4px;margin-top:0px;border: 1px solid #9A9A9A;}
+.wp-search .search-btn {width: 32px;height: 32px;position: absolute;right: 0;top:0%;/* margin-top: -23px; */}
+.wp-search .search-btn input.search-submit {width: 32px;height: 32px;}
+
+#footer .inner {padding: 17px 0px;}
+#footer .inner .goTop{display:none;}
+#footer .inner p{text-align:center;}
+#footer .inner p.copyright{ text-align:center}
+#footer .inner .foot-left{/* display:none; */float:none;margin-top:0px;margin-bottom:10px;}
+#footer .inner .foot-main{position:relative; top:5px;left:50%; width:200px; margin-left:-100px; margin-top:0px;}
+#footer .inner .foot-right{float:none;width:100%;margin: 5px 0;margin-left:0px;}
+
+.mbanner .focus-pagination {display:none;}
+/*栏目图片*/
+.l-banner{height: 180px;}
+
+#l-container .inner {padding:0px 0px;}
+#d-container .inner {padding:0px 0px;}
+.l-banner img{width:100%;height:100%;}
+
+.column-switch {display:block;}
+
+.col_menu .col_menu_head h3.col_name .col_name_text { display:block; line-height:40px;padding: 0px 5px 0px 12px; font-size:16px;}  /**栏目名称图标**/
+.col_news_head {border-bottom: 1px solid #ccc;}
+.col_metas .col_title { display:inline-block; float:left; height: 48px; line-height: 48px; }  /**当前栏目**/
+.col_metas .col_title h2 {display:inline-block;font-size: 20px;font-family:"Microsoft yahei";font-weight: normal;/* color: #90010B; *//* border-bottom: 1px solid #90010B; */}   /**当前栏目名称**/
+.col_menu .col_menu_con{display:none;border:0px solid #e4e4e4;}
+
+.col_menu {width: 100%;float:none;margin-right:0px;position:relative;} 
+.col_news {width: 100%;min-height:0px;float:none;} /**栏目新闻**/
+.col_news .col_news_box{margin-left: 10px;}
+.col_news_con { padding:5px 0px 10px 0px; margin:0 0px;}
+.article .entry .read img { width:100%;height:auto!important;}  /** 文章阅读部分图片大小限制**/
+
+.wp_paging li.pages_count,.wp_paging li.page_jump{display:none;}
+
+.infobox { width:auto; margin:0 10px; }
+}
+/**
+ * [xSmall Screen for Smart Phone]
+ * 480~767
+ */
+@media screen and (max-width: 479px) {
+.headtop .top-right {float: left;width:100%;} 
+.box_data { width: 100%;  float: left;}
+.wp-search .search-input input.search-title {width:100%;}
+
+}
+
+/**
+ * [Tiny Screen for Older Phone and Smart Phone]
+ * <319
+ */
+@media screen and (max-width: 320px) {
+	.top-left .wp_nav .nav-item a span.item-name {
+    display: inline-block;
+    padding: 5px 4px;
+    line-height: 32px;
+    cursor: pointer;
+    padding-right: 20px;
+}
+	}
+@media screen and (max-width: 319px) {
+}
